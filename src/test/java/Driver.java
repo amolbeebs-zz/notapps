@@ -18,7 +18,8 @@ public class Driver {
     private static String DEVICE_NAME= System.getProperty("device.name");
     private static String LAUNCH_TIMEOUT= System.getProperty("launch.timeout");
     private static String NEW_COMMAND_TIMEOUT= System.getProperty("new.command.timeout");
-    private static String APPIUMURL= System.getProperty("appium.url");
+    private static String APPIUM_PORT = System.getenv("APPIUM_PORT");
+    private static String APPIUM_URL= System.getProperty("appium.url")+":"+APPIUM_PORT+"/wd/hub";
     private static int IMPLICIT_WAIT=Integer.parseInt(System.getProperty("implicit.wait")) ;
     private static int PAGE_LOAD_TIMEOUT = Integer.parseInt(System.getProperty("page.load.timeout"));
     private static String SAFARI_ALLOW_POPUPS= System.getProperty("safari.allow.popups");
@@ -55,7 +56,7 @@ public class Driver {
 
 
         try {
-            webDriver = new IOSDriver(new URL(APPIUMURL), capabilities);
+            webDriver = new IOSDriver(new URL(APPIUM_URL), capabilities);
             webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT, TimeUnit.SECONDS);
             webDriver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
 
