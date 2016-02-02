@@ -39,17 +39,18 @@ public class Driver {
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, PLATFORM_NAME);
-        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
-        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, PLATFORM_VERSION);
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
-        capabilities.setCapability(MobileCapabilityType.LAUNCH_TIMEOUT, LAUNCH_TIMEOUT);  //ms
-        capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, NEW_COMMAND_TIMEOUT); //sec
-
-        capabilities.setCapability("safariIgnoreFraudWarning", SAFARI_IGNORE_FRAUD_WARNING);
-        capabilities.setCapability("safariAllowPopups", SAFARI_ALLOW_POPUPS);
-        capabilities.setCapability("fullReset", FULL_RESET);  // for iOS only
-
-        capabilities.setCapability("autoAcceptAlerts", AUTO_ACCEPT_ALERTS);
+        //commenting out Capabilities for Hive
+//        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
+//        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, PLATFORM_VERSION);
+//        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
+//        capabilities.setCapability(MobileCapabilityType.LAUNCH_TIMEOUT, LAUNCH_TIMEOUT);  //ms
+//        capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, NEW_COMMAND_TIMEOUT); //sec
+//
+//        capabilities.setCapability("safariIgnoreFraudWarning", SAFARI_IGNORE_FRAUD_WARNING);
+//        capabilities.setCapability("safariAllowPopups", SAFARI_ALLOW_POPUPS);
+//        capabilities.setCapability("fullReset", FULL_RESET);  // for iOS only
+//
+//        capabilities.setCapability("autoAcceptAlerts", AUTO_ACCEPT_ALERTS);
 //		capabilities.setCapability("orientation", "PORTRAIT");
 //		capabilities.setCapability("showIOSLog", true);
 //		capabilities.setCapability("noReset", true);
