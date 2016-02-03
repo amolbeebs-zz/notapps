@@ -40,9 +40,9 @@ public class Driver {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, PLATFORM_NAME);
         //commenting out Capabilities for Hive
-//        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
+        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
 //        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, PLATFORM_VERSION);
-//        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
+        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
 //        capabilities.setCapability(MobileCapabilityType.LAUNCH_TIMEOUT, LAUNCH_TIMEOUT);  //ms
 //        capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, NEW_COMMAND_TIMEOUT); //sec
 //
