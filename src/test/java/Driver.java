@@ -93,9 +93,12 @@ public class Driver {
 
         if(!hasQuit(webDriver)){
 
-            File file  = ((TakesScreenshot)webDriver).getScreenshotAs(OutputType.FILE);
+
+            WebDriver driverForScreenshot = new Augmenter().augment(webDriver);
+            File file  = ((TakesScreenshot)driverForScreenshot).getScreenshotAs(OutputType.FILE);
             try{
                 FileUtils.copyFile(file, new File(HIVE_RESULTS_FOLDER+"Screenshot.jpg"));
+                driverForScreenshot.quit();
             }catch(IOException e){
                 e.printStackTrace();
             }
