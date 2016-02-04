@@ -1,10 +1,16 @@
 import io.appium.java_client.ios.IOSDriver;
 import io.appium.java_client.remote.MobileBrowserType;
 import io.appium.java_client.remote.MobileCapabilityType;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +25,7 @@ public class Driver {
     private static String LAUNCH_TIMEOUT= System.getProperty("launch.timeout");
     private static String NEW_COMMAND_TIMEOUT= System.getProperty("new.command.timeout");
     private static String APPIUM_PORT = System.getenv("APPIUM_PORT");
+    private static String HIVE_RESULTS_FOLDER = System.getenv("HIVE_RESULTS");
     private static String APPIUM_URL= System.getProperty("appium.url")+":"+APPIUM_PORT+"/wd/hub";
     private static int IMPLICIT_WAIT=Integer.parseInt(System.getProperty("implicit.wait")) ;
     private static int PAGE_LOAD_TIMEOUT = Integer.parseInt(System.getProperty("page.load.timeout"));
@@ -85,6 +92,16 @@ public class Driver {
     public static void quitDriver(){
 
         if(!hasQuit(webDriver)){
+
+
+            WebDriver driverForScreenshot = new Augmenter().augment(webDriver);
+            File file  = ((TakesScreenshot)driverForScreenshot).getScreenshotAs(OutputType.FILE);
+            try{
+                FileUtils.copyFile(file, new File(HIVE_RESULTS_FOLDER+"Screenshot.jpg"));
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+
             webDriver.quit();
         }
     }
