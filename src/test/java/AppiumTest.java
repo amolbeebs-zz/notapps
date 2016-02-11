@@ -8,7 +8,8 @@ import java.util.Properties;
 
 public class AppiumTest {
     Page page;
-
+    private static String USER_NAME = System.getProperty("username");
+    private static String PASSWORD = System.getProperty("password");
 
     @Before
     public void setup() throws IOException {
@@ -29,8 +30,9 @@ public class AppiumTest {
 
         page.openBeebs();
         page.viewNotifications();
-        page.signinWithCredentials("amolbeebs@mailinator.com","beebstest");
+        page.signinWithCredentials(USER_NAME,PASSWORD);
         page.viewNotifications();
+        page.takeScreenshot();
 
     }
 

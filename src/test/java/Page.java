@@ -53,5 +53,11 @@ public class Page {
 
     }
 
+    public void takeScreenshot() {
+
+        Driver.takeScreenshot(driver);
+
+    }
+
 
 }
