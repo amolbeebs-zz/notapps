@@ -93,23 +93,28 @@ public class Driver {
 
         if(!hasQuit(webDriver)){
 
-
-            WebDriver driverForScreenshot = new Augmenter().augment(webDriver);
-            File file  = ((TakesScreenshot)driverForScreenshot).getScreenshotAs(OutputType.FILE);
-            try{
-                FileUtils.copyFile(file, new File(HIVE_RESULTS_FOLDER+"Screenshot.jpg"));
-                driverForScreenshot.quit();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-
+            takeScreenshot(webDriver);
             webDriver.quit();
         }
     }
 
     public static boolean hasQuit(WebDriver driver) {
-        return ((RemoteWebDriver)driver).getSessionId() == null;
+        return ((RemoteWebDriver) driver).getSessionId() == null;
     }
 
 
+    public static void takeScreenshot(WebDriver driver) {
+
+        WebDriver driverForScreenshot = new Augmenter().augment(driver);
+        File file = ((TakesScreenshot) driverForScreenshot).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(file, new File(HIVE_RESULTS_FOLDER + "Screenshot.jpg"));
+            driverForScreenshot.quit();
+        } catch (IOException e) {
+            e.printStackTrace();
+
+        }
+
+
+    }
 }
