@@ -1,5 +1,6 @@
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -8,8 +9,8 @@ import java.util.Properties;
 
 public class AppiumTest {
     Page page;
-    private static String USER_NAME = System.getProperty("username");
-    private static String PASSWORD = System.getProperty("password");
+    private static String USER_NAME = "amolbeebs@mailinator.com123";
+    private static String PASSWORD = "beebstest";
 
     @Before
     public void setup() throws IOException {
@@ -32,9 +33,12 @@ public class AppiumTest {
         page.viewNotifications();
         page.signinWithCredentials(USER_NAME,PASSWORD);
         page.viewNotifications();
-        page.takeScreenshot();
 
     }
 
+    @After
+    public void tearDown(){
+        page.quitDriver();
+    }
 
 }

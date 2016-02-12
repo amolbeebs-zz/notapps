@@ -59,5 +59,7 @@ public class Page {
 
     }
 
-
+    public void quitDriver(){
+        Driver.quitDriver();
+    }
 }

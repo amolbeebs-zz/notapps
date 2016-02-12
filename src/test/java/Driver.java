@@ -5,6 +5,7 @@ import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.Augmenter;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -24,9 +25,6 @@ public class Driver {
     private static String DEVICE_NAME= System.getProperty("device.name");
     private static String LAUNCH_TIMEOUT= System.getProperty("launch.timeout");
     private static String NEW_COMMAND_TIMEOUT= System.getProperty("new.command.timeout");
-    private static String APPIUM_PORT = System.getenv("APPIUM_PORT");
-    private static String HIVE_RESULTS_FOLDER = System.getenv("HIVE_RESULTS");
-    private static String APPIUM_URL= System.getProperty("appium.url")+":"+APPIUM_PORT+"/wd/hub";
     private static int IMPLICIT_WAIT=Integer.parseInt(System.getProperty("implicit.wait")) ;
     private static int PAGE_LOAD_TIMEOUT = Integer.parseInt(System.getProperty("page.load.timeout"));
     private static String SAFARI_ALLOW_POPUPS= System.getProperty("safari.allow.popups");
@@ -34,8 +32,14 @@ public class Driver {
     private static String FULL_RESET= System.getProperty("full.reset");
     private static String AUTO_ACCEPT_ALERTS= System.getProperty("auto.accept.alerts");
 
+    private static String HIVE_RESULTS_FOLDER = System.getenv("HIVE_RESULTS");
+    private static String APPIUM_URL= System.getProperty("appium.url");
 
 
+//HIVE STUFF
+//    private static String APPIUM_PORT = System.getenv("APPIUM_PORT");
+//    private static String HIVE_RESULTS_FOLDER = System.getenv("HIVE_RESULTS");
+//    private static String APPIUM_URL= System.getProperty("appium.url")+":"+APPIUM_PORT+"/wd/hub";
 
     public static WebDriver getInstance() {
         return initialiseDriver();
@@ -47,20 +51,23 @@ public class Driver {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, PLATFORM_NAME);
         //commenting out Capabilities for Hive
-        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
-//        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, PLATFORM_VERSION);
+//        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
+
         capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
+        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, "Safari");
+
+//        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, PLATFORM_VERSION);
 //        capabilities.setCapability(MobileCapabilityType.LAUNCH_TIMEOUT, LAUNCH_TIMEOUT);  //ms
 //        capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, NEW_COMMAND_TIMEOUT); //sec
 //
 //        capabilities.setCapability("safariIgnoreFraudWarning", SAFARI_IGNORE_FRAUD_WARNING);
 //        capabilities.setCapability("safariAllowPopups", SAFARI_ALLOW_POPUPS);
 //        capabilities.setCapability("fullReset", FULL_RESET);  // for iOS only
-//
-//        capabilities.setCapability("autoAcceptAlerts", AUTO_ACCEPT_ALERTS);
-//		capabilities.setCapability("orientation", "PORTRAIT");
-//		capabilities.setCapability("showIOSLog", true);
-//		capabilities.setCapability("noReset", true);
+
+        capabilities.setCapability("autoAcceptAlerts", AUTO_ACCEPT_ALERTS);
+		capabilities.setCapability("orientation", "PORTRAIT");
+		capabilities.setCapability("showIOSLog", true);
+		capabilities.setCapability("noReset", true);
 
 
         try {
@@ -77,16 +84,6 @@ public class Driver {
         return webDriver;
     }
 
-    // close the driver
-    static {
-        Runtime.getRuntime().addShutdownHook(new Thread() {
-            @Override
-            public void run() {
-                quitDriver();
-            }
-        });
-
-    }
 
 
     public static void quitDriver(){
