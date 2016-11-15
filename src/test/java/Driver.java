@@ -38,7 +38,7 @@ public class Driver {
     }
 
     private static WebDriver initialiseDriver() {
-        String UDID = System.getenv("ADB_DEVICE_ARG");
+        String UDID = System.getenv("DEVICE_TARGET");
         String DEVICE_NAME = System.getenv("DEVICE_NAME");
         String APPIUM_URL = "http://0.0.0.0" + ":" + System.getenv("APPIUM_PORT") + "/wd/hub";
         System.setProperty("browserCapabilities",
