@@ -29,7 +29,7 @@ public class AppiumTest {
 
         page.openBeebs();
         page.viewNotifications();
-        page.signinWithCredentials("amolbeebs@mailinator.com","beebstest");
+        page.signinWithCredentials("amolbeebs@mailinator.com","beebstest123");
         page.viewNotifications();
 
     }

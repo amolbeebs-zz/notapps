@@ -1,11 +1,10 @@
-import io.appium.java_client.ios.IOSDriver;
-import io.appium.java_client.remote.MobileBrowserType;
-import io.appium.java_client.remote.MobileCapabilityType;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.Augmenter;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -16,64 +15,58 @@ import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 public class Driver {
-    private static String CHOICE_OF_DRIVER = System.getProperty("driver");
     private static WebDriver webDriver;
-    private static String PLATFORM_NAME= System.getProperty("platform.name");
-    private static String BROWSER_NAME= System.getProperty("browser.name");
-    private static String PLATFORM_VERSION= System.getProperty("platform.version");
-    private static String DEVICE_NAME= System.getProperty("device.name");
-    private static String LAUNCH_TIMEOUT= System.getProperty("launch.timeout");
-    private static String NEW_COMMAND_TIMEOUT= System.getProperty("new.command.timeout");
-    private static String APPIUM_PORT = System.getenv("APPIUM_PORT");
     private static String HIVE_RESULTS_FOLDER = System.getenv("HIVE_RESULTS");
-    private static String APPIUM_URL= System.getProperty("appium.url")+":"+APPIUM_PORT+"/wd/hub";
-    private static int IMPLICIT_WAIT=Integer.parseInt(System.getProperty("implicit.wait")) ;
-    private static int PAGE_LOAD_TIMEOUT = Integer.parseInt(System.getProperty("page.load.timeout"));
-    private static String SAFARI_ALLOW_POPUPS= System.getProperty("safari.allow.popups");
-    private static String SAFARI_IGNORE_FRAUD_WARNING= System.getProperty("safari.ignore.fraud.warning");
-    private static String FULL_RESET= System.getProperty("full.reset");
-    private static String AUTO_ACCEPT_ALERTS= System.getProperty("auto.accept.alerts");
+    private static int IMPLICIT_WAIT = 20;
+    private static int PAGE_LOAD_TIMEOUT = 60;
+    private static String SAFARI_ALLOW_POPUPS = System.getProperty("safari.allow.popups");
+    private static String SAFARI_IGNORE_FRAUD_WARNING = System.getProperty("safari.ignore.fraud.warning");
+    private static String FULL_RESET = System.getProperty("full.reset");
+    private static String AUTO_ACCEPT_ALERTS = System.getProperty("auto.accept.alerts");
 
-
-
-
+    //    launch.timeout=300000
+//    new.command.timeout=300
+//    appium.url=http://0.0.0.0
+//    implicit.wait=10
+//    page.load.timeout=60
+//    safari.allow.popups=true
+//    safari.ignore.fraud.warning=true
+//    full.reset=false
+//    auto.accept.alerts=true
     public static WebDriver getInstance() {
         return initialiseDriver();
     }
 
-
     private static WebDriver initialiseDriver() {
-
-        DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability(MobileCapabilityType.PLATFORM_NAME, PLATFORM_NAME);
-        //commenting out Capabilities for Hive
-        capabilities.setCapability(MobileCapabilityType.BROWSER_NAME, MobileBrowserType.SAFARI);
-//        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, PLATFORM_VERSION);
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, DEVICE_NAME);
-//        capabilities.setCapability(MobileCapabilityType.LAUNCH_TIMEOUT, LAUNCH_TIMEOUT);  //ms
-//        capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, NEW_COMMAND_TIMEOUT); //sec
-//
-//        capabilities.setCapability("safariIgnoreFraudWarning", SAFARI_IGNORE_FRAUD_WARNING);
-//        capabilities.setCapability("safariAllowPopups", SAFARI_ALLOW_POPUPS);
-//        capabilities.setCapability("fullReset", FULL_RESET);  // for iOS only
-//
-//        capabilities.setCapability("autoAcceptAlerts", AUTO_ACCEPT_ALERTS);
-//		capabilities.setCapability("orientation", "PORTRAIT");
-//		capabilities.setCapability("showIOSLog", true);
-//		capabilities.setCapability("noReset", true);
-
-
+        String UDID = System.getenv("ADB_DEVICE_ARG");
+        String DEVICE_NAME = System.getenv("DEVICE_NAME");
+        String APPIUM_URL = "http://0.0.0.0" + ":" + System.getenv("APPIUM_PORT") + "/wd/hub";
+        System.setProperty("browserCapabilities",
+                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.155 Safari/537.36");
+        //String browserCapabilities = System.getProperty("browserCapabilities");
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities();
+        //ChromeOptions options = new ChromeOptions();
+        //options.addArguments("--user-agent=" + browserCapabilities);
+        //options.addArguments("-incognito");
+        // options.addArguments("--disable-popup-blocking");
+        //desiredCapabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        //Andriod Android
+        desiredCapabilities.setCapability("platformName", "ios");
+        desiredCapabilities.setCapability("os_version", "10.11.5");
+        desiredCapabilities.setCapability("browserName", "Safari");
+        desiredCapabilities.setCapability("deviceName", DEVICE_NAME);
+        desiredCapabilities.setCapability("udid", UDID);
+        desiredCapabilities.setCapability("new.command.timeout", "300");
+        desiredCapabilities.setCapability("auto.accept.alerts", true);
+        desiredCapabilities.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
         try {
-            webDriver = new IOSDriver(new URL(APPIUM_URL), capabilities);
+            System.out.println("--------->>>" + APPIUM_URL);
+            webDriver = new RemoteWebDriver(new URL(APPIUM_URL), desiredCapabilities);
             webDriver.manage().timeouts().implicitlyWait(IMPLICIT_WAIT, TimeUnit.SECONDS);
             webDriver.manage().timeouts().pageLoadTimeout(PAGE_LOAD_TIMEOUT, TimeUnit.SECONDS);
-
         } catch (MalformedURLException ex) {
             ex.printStackTrace();
-
         }
-
-
         return webDriver;
     }
 
@@ -85,31 +78,27 @@ public class Driver {
                 quitDriver();
             }
         });
-
     }
 
-
-    public static void quitDriver(){
-
-        if(!hasQuit(webDriver)){
-
-
-            WebDriver driverForScreenshot = new Augmenter().augment(webDriver);
-            File file  = ((TakesScreenshot)driverForScreenshot).getScreenshotAs(OutputType.FILE);
-            try{
-                FileUtils.copyFile(file, new File(HIVE_RESULTS_FOLDER+"Screenshot.jpg"));
-                driverForScreenshot.quit();
-            }catch(IOException e){
-                e.printStackTrace();
-            }
-
+    public static void quitDriver() {
+        if (!hasQuit(webDriver)) {
+            takeScreenshot(webDriver);
             webDriver.quit();
         }
     }
 
     public static boolean hasQuit(WebDriver driver) {
-        return ((RemoteWebDriver)driver).getSessionId() == null;
+        return ((RemoteWebDriver) driver).getSessionId() == null;
     }
 
-
+    public static void takeScreenshot(WebDriver driver) {
+        WebDriver driverForScreenshot = new Augmenter().augment(driver);
+        File file = ((TakesScreenshot) driverForScreenshot).getScreenshotAs(OutputType.FILE);
+        try {
+            FileUtils.copyFile(file, new File(HIVE_RESULTS_FOLDER + "/" + "Screenshot.jpg"));
+            driverForScreenshot.quit();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
