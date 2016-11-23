@@ -25,14 +25,12 @@ public class AppiumTest {
     }
 
     @Test
-    public void testICanViewNotificationsAfterSignIn(){
+    public void testICanSubmitVoteAfterSignIn(){
 
         page.openBeebs();
-        page.viewNotifications();
-        page.signinWithCredentials("amolbeebs@mailinator.com","beebstest123");
-        page.viewNotifications();
-
+        page.navigateToVotePage();
+        page.signinWithCredentials("reena.vila2014@gmail.com","Ivotetest1");
+        page.selectVoteOption();
     }
-
 
 }

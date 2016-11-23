@@ -9,6 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Page {
     private WebDriver driver = Driver.getInstance();
     private String URL = System.getProperty("test.url");
+    private String IvoteUrl= System.getProperty("test.vote.url");
 
 
     public void viewNotifications() {
@@ -48,9 +49,9 @@ public class Page {
         //click on signin btn
         System.out.println("I am in signingin");
         WebElement idctaSignin;
-        idctaSignin = driver.findElement(By.id("idcta-link"));
+        idctaSignin = driver.findElement(By.cssSelector(".id4-cta-signin"));
         idctaSignin.click();
-        waitForPageLoad();
+       waitForPageLoad();
 
         System.out.println("I am in signingin :::"+driver.getCurrentUrl());
         enterID(ID);
@@ -103,5 +104,19 @@ public class Page {
                         .equals("complete");
             }
         });
+    }
+
+    public void navigateToVotePage() {
+        driver.navigate().to(IvoteUrl);
+    }
+
+    public void selectVoteOption() {
+        WebElement voteOption= driver.findElement(By.xpath("//*[@id='vote-option-container-2c97c590574edf9001575715650f0059']/div/div[1]/label"));
+        voteOption.click();
+        waitForPageLoad();
+        WebElement voteNowButton= driver.findElement(By.cssSelector(".vote-button"));
+        voteNowButton.click();
+        waitForPageLoad();
+
     }
 }
